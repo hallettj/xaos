@@ -72,6 +72,13 @@ Screw.Unit(function(unit) { with(unit) {
             it('returns the modified object', function() {
                 expect(obj.include(module)).to(equal, obj);
             });
+
+            it('throws an error if the receiver does not match the object that `include` is bound to', function() {
+                var other = Proto.clone();
+                expect(function () {
+                    obj.include.call(other, module);
+                }).to(throw_exception);
+            });
         });
 
         describe('create()', function() {
