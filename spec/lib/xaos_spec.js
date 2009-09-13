@@ -1,18 +1,18 @@
-/*extern Screw Proto */
+/*extern Screw Xaos */
 
-//= require <proto>
+//= require <xaos>
 
 Screw.Unit(function(unit) { with(unit) {
-    describe('Proto', function() {
+    describe('Xaos', function() {
         it('defines an abstract object', function() {
-            expect(Proto).to_not(be_undefined);
+            expect(Xaos).to_not(be_undefined);
         });
 
         describe('clone()', function() {
             var clone;
 
             before(function() {
-                clone = Proto.clone();
+                clone = Xaos.clone();
             });
 
             it('creates a clone', function() {
@@ -24,7 +24,7 @@ Screw.Unit(function(unit) { with(unit) {
             });
 
             it('passes a prototype property to the clone', function() {
-                expect(clone.prototype).to(equal, Proto);
+                expect(clone.prototype).to(equal, Xaos);
             });
 
             it('passes an `include` method to the clone', function() {
@@ -44,7 +44,7 @@ Screw.Unit(function(unit) { with(unit) {
             var obj, module;
 
             before(function() {
-                obj = Proto.clone();
+                obj = Xaos.clone();
                 module = {
                     foo: 'foo',
                     bar: 'bar',
@@ -74,7 +74,7 @@ Screw.Unit(function(unit) { with(unit) {
             });
 
             it('throws an error if the receiver does not match the object that `include` is bound to', function() {
-                var other = Proto.clone();
+                var other = Xaos.clone();
                 expect(function () {
                     obj.include.call(other, module);
                 }).to(throw_exception);
@@ -85,17 +85,17 @@ Screw.Unit(function(unit) { with(unit) {
             var obj, Foo;
 
             before(function() {
-                obj = Proto.create();
-                Foo = Proto.clone();
+                obj = Xaos.create();
+                Foo = Xaos.clone();
             });
 
             it('creates a new object', function() {
-                expect(Proto.create()).to_not(be_undefined);
+                expect(Xaos.create()).to_not(be_undefined);
             });
 
             it('makes the new object inherit from itself', function() {
                 expect(obj.create).to(be_an_instance_of, Function);
-                expect(obj.prototype).to(equal, Proto);
+                expect(obj.prototype).to(equal, Xaos);
             });
 
             it('calls `initialize` on the new object', function() {
@@ -123,17 +123,17 @@ Screw.Unit(function(unit) { with(unit) {
             var Foo;
 
             before(function() {
-                Foo = Proto.clone();
+                Foo = Xaos.clone();
             });
 
             it('creates a new object', function() {
-                expect(Proto.extend(function() {})).to_not(be_undefined);
+                expect(Xaos.extend(function() {})).to_not(be_undefined);
             });
 
             it('makes the new object inherit from the receiver', function() {
-                var obj = Proto.extend(function() {});
+                var obj = Xaos.extend(function() {});
                 expect(obj.extend).to(be_an_instance_of, Function);
-                expect(obj.prototype).to(equal, Proto);
+                expect(obj.prototype).to(equal, Xaos);
             });
 
             it('does not call `initialize` on the new object', function() {
@@ -145,43 +145,43 @@ Screw.Unit(function(unit) { with(unit) {
 
             it('accepts a callback that defines new behavior', function() {
                 var called = false;
-                Proto.extend(function() { called = true });
+                Xaos.extend(function() { called = true });
                 expect(called).to(be_true);
             });
 
             it('throws an error if no callback is given', function() {
-                expect(function() { Proto.extend(); }).to(throw_exception);
+                expect(function() { Xaos.extend(); }).to(throw_exception);
             });
 
             it('passes the new object as the first argument to the callback', function() {
                 var first, obj;
-                obj = Proto.extend(function(arg) { first = arg; });
+                obj = Xaos.extend(function(arg) { first = arg; });
                 expect(first).to(equal, obj);
             });
 
             it('assigns the new object as the value of `this` when invoking the callback', function() {
                 var first, obj;
-                obj = Proto.extend(function() { first = this; });
+                obj = Xaos.extend(function() { first = this; });
                 expect(first).to(equal, obj);
             });
-    
+
             it('returns the return value of the callback if there is one', function() {
                 var obj;
-                obj = Proto.extend(function() { return 'foo'; });
+                obj = Xaos.extend(function() { return 'foo'; });
                 expect(obj).to(equal, 'foo');
             });
 
             it('mixes in the `prototype` property of the callback', function() {
                 var obj, F = function() {};
                 F.prototype = { foo: 'bar' };
-                obj = Proto.extend(F);
+                obj = Xaos.extend(F);
                 expect(obj.foo).to(equal, 'bar');
             });
 
             it('applies properties from the callback prototype to a singleton', function() {
                 var obj, F = function() {};
                 F.prototype = { foo: 'bar' };
-                obj = Proto.extend(F);
+                obj = Xaos.extend(F);
                 expect(obj.hasOwnProperty('foo')).to(be_false);
             });
         });
@@ -189,9 +189,9 @@ Screw.Unit(function(unit) { with(unit) {
         describe('descendant_of()', function() {
             var ancestor, obj;
 
-            describe('when the argument descends from Proto', function() {
+            describe('when the argument descends from Xaos', function() {
                 before(function() {
-                    ancestor = Proto.clone();
+                    ancestor = Xaos.clone();
                 });
 
                 it('returns true if the receiver descends from the given object', function() {
@@ -200,25 +200,25 @@ Screw.Unit(function(unit) { with(unit) {
                 });
 
                 it('returns false if the receiver does not descend from the given object', function() {
-                    obj = Proto.clone();
+                    obj = Xaos.clone();
                     expect(obj.descendant_of(ancestor)).to(be_false);
                 });
             });
 
-            describe('when the argument does not descend from Proto', function() {
+            describe('when the argument does not descend from Xaos', function() {
                 before(function() {
                     var C = function() {};
                     ancestor = new C();
                 });
 
                 it('returns true if the receiver descends from the given object', function() {
-                    obj = Proto.clone.call(ancestor);
-                    obj.include(Proto);
+                    obj = Xaos.clone.call(ancestor);
+                    obj.include(Xaos);
                     expect(obj.descendant_of(ancestor)).to(be_true);
                 });
 
                 it('returns false if the receiver does not descend from the given object', function() {
-                    obj = Proto.clone();
+                    obj = Xaos.clone();
                     expect(obj.descendant_of(ancestor)).to(be_false);
                 });
             });
@@ -228,7 +228,7 @@ Screw.Unit(function(unit) { with(unit) {
             var ancestor;
 
             before(function() {
-                ancestor = Proto.clone();
+                ancestor = Xaos.clone();
             });
 
             it('returns true if the argument descends from the receiver', function() {

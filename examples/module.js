@@ -1,4 +1,4 @@
-/*extern Proto */
+/*extern Xaos */
 /*globals Enumerable */
 
 //= require <proto>
@@ -12,7 +12,7 @@
  *
  * or:
  *
- *     obj = Proto.extend(function(public) {
+ *     obj = Xaos.extend(function(public) {
  *         public.include(Enumerable);
  *         public.each = function(func) {
  *             for (var i = 0; i < attribute_array.length; i += 1) {
@@ -23,7 +23,7 @@
  *     });
  **/
 
-Enumerable = Proto.extend(function(public) {
+Enumerable = Xaos.extend(function(public) {
     function to_value() {
         var args = Array.prototype.slice.call(arguments);
         if (arguments.length == 1) {
