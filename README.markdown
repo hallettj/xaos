@@ -1,5 +1,5 @@
-Xaos: in inheritance pattern for JavaScript
-==============================================
+Xaos: a prototypal inheritance pattern for JavaScript
+=======================================================
 
 Usage example:
 
@@ -28,5 +28,5 @@ Usage example:
     obj.describe();  //=> My attributes are foo: 1, bar: 2
 
 
-http://robertnyman.com/2008/10/06/javascript-inheritance-how-and-why/
+http://robertnyman.com/2008/10/06/javascript-inheritance-how-and-why/  
 http://yuiblog.com/blog/2007/06/12/module-pattern/
