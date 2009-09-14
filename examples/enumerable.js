@@ -1,13 +1,13 @@
 /*extern Xaos */
 /*globals Enumerable */
 
-//= require <proto>
+//= require <xaos>
 
 /**
  * Enumerable
  *
  * Usage:
- * 
+ *
  *     obj.include(Enumerable);
  *
  * or:
@@ -57,6 +57,12 @@ Enumerable = Xaos.extend(function(public) {
             r = func.apply(that, [r].concat(arguments));
         });
         return r;
+    };
+
+    public.select = function(func) {
+        return this.inject([], function(l, e) {
+            return func(e) ? l.concat(e) : l;
+        });
     };
 
     public.first = function() {
