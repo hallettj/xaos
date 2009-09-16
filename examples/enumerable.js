@@ -26,10 +26,10 @@
 Enumerable = Xaos.extend(function(public) {
     function to_value() {
         var args = Array.prototype.slice.call(arguments);
-        if (arguments.length == 1) {
-            return arguments[0];
+        if (args.length == 1) {
+            return args[0];
         } else {
-            return arguments;
+            return args;
         }
     }
 
