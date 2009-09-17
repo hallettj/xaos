@@ -186,6 +186,51 @@ Screw.Unit(function(unit) { with(unit) {
             });
         });
 
+        describe('alias_method_chain()', function() {
+            var parent, obj, foreign;
+
+            before(function() {
+                parent = Xaos.extend(function(public) {
+                    public.foo = function() { return 'foo'; };
+                    public.bar = function() { return 'bar'; };
+                });
+
+                obj = parent.extend(function(public) {
+                    public.foo_with_emphasis = function() {
+                        return this.foo_without_emphasis() + '!!';
+                    };
+                    public.alias_method_chain('foo', 'emphasis');
+                });
+
+                foreign = {
+                    nao: function() { return 'nao'; }
+                };
+            });
+
+            it('assigns the original method to a new name', function() {
+                obj.alias_method_chain('bar', 'alias');
+                expect(obj.bar_without_alias()).to(equal, 'bar');
+            });
+
+            it('gives the new method the original name', function() {
+                obj.bar_with_alias = function() { return 'new_method'; };
+                obj.alias_method_chain('bar', 'alias');
+                expect(obj.bar()).to(equal, 'new_method');
+            });
+
+            it('extends a method', function() {
+                expect(obj.foo()).to(equal, 'foo!!');
+            });
+
+            it('can be applied to a foreign object', function() {
+                foreign.nao_with_emphasis = function() {
+                    return this.nao_without_emphasis() + '!!';
+                };
+                Xaos.alias_method_chain.call(foreign, 'nao', 'emphasis');
+                expect(foreign.nao()).to(equal, 'nao!!');
+            });
+        });
+
         describe('descendant_of()', function() {
             var ancestor, obj;
 
