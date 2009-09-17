@@ -43,41 +43,75 @@ Screw.Unit(function(unit) { with(unit) {
         describe('include()', function() {
             var obj, module;
 
-            before(function() {
-                obj = Xaos.clone();
-                module = {
-                    foo: 'foo',
-                    bar: 'bar',
-                    nao: 'nao'
-                };
+            describe('when called on bound object', function() {
+                before(function() {
+                    obj = Xaos.clone();
+                    module = {
+                        foo: 'foo',
+                        bar: 'bar',
+                        nao: 'nao'
+                    };
+                });
+
+                it('makes given properties available on the receiver', function() {
+                    obj.include(module);
+                    expect(obj.foo).to(equal, 'foo');
+                });
+
+                it('assigns properties to an anonymous ancestor of the receiver', function() {
+                    obj.include(module);
+                    expect(obj.hasOwnProperty('foo')).to(be_false);
+                });
+
+                it('filters properties as they are added', function() {
+                    obj.include(module, 'bar', 'nao');
+                    expect(obj.foo).to(be_undefined);
+                    expect(obj.bar).to(equal, 'bar');
+                    expect(obj.nao).to(equal, 'nao');
+                });
+
+                it('returns the modified object', function() {
+                    expect(obj.include(module)).to(equal, obj);
+                });
             });
 
-            it('makes given properties available on the receiver', function() {
-                obj.include(module);
-                expect(obj.foo).to(equal, 'foo');
+            describe('when called on a foreign object', function() {
+                before(function() {
+                    obj = {};
+                    obj.include = Xaos.include;
+                    module = {
+                        foo: 'foo',
+                        bar: 'bar',
+                        nao: 'nao'
+                    };
+                });
+
+                it('makes given properties available on the receiver', function() {
+                    obj.include(module);
+                    expect(obj.foo).to(equal, 'foo');
+                });
+
+                it('assigns properties directly to the receiver', function() {
+                    obj.include(module);
+                    expect(obj.hasOwnProperty('foo')).to(be_true);
+                });
+
+                it('filters properties as they are added', function() {
+                    obj.include(module, 'bar', 'nao');
+                    expect(obj.foo).to(be_undefined);
+                    expect(obj.bar).to(equal, 'bar');
+                    expect(obj.nao).to(equal, 'nao');
+                });
+
+                it('returns the modified object', function() {
+                    expect(obj.include(module)).to(equal, obj);
+                });
             });
 
-            it('assigns properties to an anonymous ancestor of the receiver', function() {
-                obj.include(module);
-                expect(obj.hasOwnProperty('foo')).to(be_false);
-            });
-
-            it('filters properties as they are added', function() {
-                obj.include(module, 'bar', 'nao');
-                expect(obj.foo).to(be_undefined);
-                expect(obj.bar).to(equal, 'bar');
-                expect(obj.nao).to(equal, 'nao');
-            });
-
-            it('returns the modified object', function() {
-                expect(obj.include(module)).to(equal, obj);
-            });
-
-            it('throws an error if the receiver does not match the object that `include` is bound to', function() {
-                var other = Xaos.clone();
-                expect(function () {
-                    obj.include.call(other, module);
-                }).to(throw_exception);
+            it('is available for mixins', function() {
+                obj = {};
+                Xaos.include.call(obj, Xaos);
+                expect(obj.include).to(be_an_instance_of, Function);
             });
         });
 
