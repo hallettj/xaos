@@ -1,5 +1,6 @@
 /*extern Screw Xaos */
 
+//= require <spec_helper>
 //= require <xaos>
 
 Screw.Unit(function(unit) { with(unit) {
@@ -27,12 +28,20 @@ Screw.Unit(function(unit) { with(unit) {
                 expect(clone.prototype).to(equal, Xaos);
             });
 
-            it('passes an `include` method to the clone', function() {
-                expect(clone.include).to(be_an_instance_of, Function);
-            });
-
             it('assigns `prototype` to an anymous ancestor of the clone', function() {
                 expect(clone.hasOwnProperty('prototype')).to(be_false);
+            });
+
+            it('passes a `private` object to the clone', function() {
+                expect(clone.private).to(equal, {});
+            });
+
+            it('assigns `private` to an anonymous ancestor of the clone', function() {
+                expect(clone.hasOwnProperty('private')).to(be_false);
+            });
+
+            it('passes an `include` method to the clone', function() {
+                expect(clone.include).to(be_an_instance_of, Function);
             });
 
             it('assigns `include` to an anonymous ancestor of the clone', function() {
